@@ -56,14 +56,11 @@ local Home = Window:Tab({
 })
 
 -- Get user info safely
-local Player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local UserId = Player.UserId
 local DisplayName = Player.DisplayName
-local Thumbnail = "rbxassetid://0"
-
-pcall(function()
-    Thumbnail = game.Players:GetUserThumbnailAsync(UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
-end)
+local Thumbnail = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. UserId .. "&width=150&height=150&format=png"
 
 Home:Paragraph({
     Title = "Welcome, " .. DisplayName .. "!",
