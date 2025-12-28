@@ -12,7 +12,7 @@ WindUI:AddTheme({
 
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub Universal",
-    Icon = "solar:global-bold", -- Solar icon
+    Icon = "global-bold", -- Solar icon
     Author = "By @aiz.fun",
     Folder = "Aiz Hub Universal",
     Size = UDim2.fromOffset(580, 460),
@@ -37,14 +37,14 @@ local Window = WindUI:CreateWindow({
 -- custom bar (fixed method name)
 Window:AddTopbarButton({
     Title = "Help",
-    Icon = "solar:help-circle-bold", -- Solar icon
+    Icon = "help-circle-bold", -- Solar icon
     Callback = function() setclipboard("https://discord.gg/aiz") end,
 })
 
 -- custom tag (fixed method name and icon)
 Window:EditTag({
     Title = "Testing!",
-    Icon = "solar:info-circle-bold", -- Solar icon
+    Icon = "info-circle-bold", -- Solar icon
     Color = Color3.fromHex("#9713e496"),
     Radius = 10, 
 })
@@ -52,7 +52,7 @@ Window:EditTag({
 -- Home tab
 local Home = Window:Tab({
     Title = "Home",
-    Icon = "solar:home-2-bold", -- Solar icon
+    Icon = "home-2-bold", -- Solar icon
 })
 
 -- Get user info safely
@@ -73,7 +73,7 @@ Home:Paragraph({
     Buttons = {
         {
             Title = "Discord Server",
-            Icon = "solar:chat-round-dots-bold", -- Solar icon
+            Icon = "chat-round-dots-bold", -- Solar icon
             Callback = function()
                 setclipboard("https://discord.gg/aiz")
                 WindUI:Notify({
@@ -85,7 +85,7 @@ Home:Paragraph({
         },
         {
             Title = "Help Center",
-            Icon = "solar:help-circle-bold", -- Solar icon
+            Icon = "help-circle-bold", -- Solar icon
             Callback = function()
                 setclipboard("https://aiz.fun")
                 WindUI:Notify({
