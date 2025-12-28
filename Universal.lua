@@ -12,14 +12,14 @@ WindUI:AddTheme({
 
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub Universal",
-    Icon = "global-bold", -- Solar icon
+    Icon = "lucide:globe",
     Author = "By @aiz.fun",
     Folder = "Aiz Hub Universal",
     Size = UDim2.fromOffset(580, 460),
     MinSize = Vector2.new(560, 350),
     MaxSize = Vector2.new(850, 560),
     Transparent = true,
-    Theme = "Purple-Gradient",
+    Theme = "Dark",
     Resizable = true,
     SideBarWidth = 200,
     BackgroundImageTransparency = 0.42,
@@ -37,14 +37,14 @@ local Window = WindUI:CreateWindow({
 -- custom bar (fixed method name)
 Window:AddTopbarButton({
     Title = "Help",
-    Icon = "help-circle-bold", -- Solar icon
+    Icon = "lucide:help-circle",
     Callback = function() setclipboard("https://discord.gg/aiz") end,
 })
 
 -- custom tag (fixed method name and icon)
 Window:EditTag({
     Title = "Testing!",
-    Icon = "info-circle-bold", -- Solar icon
+    Icon = "lucide:info", 
     Color = Color3.fromHex("#9713e496"),
     Radius = 10, 
 })
@@ -52,7 +52,7 @@ Window:EditTag({
 -- Home tab
 local Home = Window:Tab({
     Title = "Home",
-    Icon = "home-2-bold", -- Solar icon
+    Icon = "lucide:home",
 })
 
 -- Get user info safely
@@ -73,7 +73,7 @@ Home:Paragraph({
     Buttons = {
         {
             Title = "Discord Server",
-            Icon = "chat-round-dots-bold", -- Solar icon
+            Icon = "lucide:message-circle",
             Callback = function()
                 setclipboard("https://discord.gg/aiz")
                 WindUI:Notify({
@@ -85,7 +85,7 @@ Home:Paragraph({
         },
         {
             Title = "Help Center",
-            Icon = "help-circle-bold", -- Solar icon
+            Icon = "lucide:help-circle",
             Callback = function()
                 setclipboard("https://aiz.fun")
                 WindUI:Notify({
