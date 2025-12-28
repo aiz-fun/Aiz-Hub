@@ -1,12 +1,20 @@
 local Version = "1.6.41"
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/download/" .. Version .. "/main.lua"))()
+
+-- custom theme (must be added BEFORE CreateWindow if used in config)
+WindUI:AddTheme({
+    Name = "Purple Gradient",
+    Accent = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromHex("#2b1055"), Transparency = 0 },
+        ["100"] = { Color = Color3.fromHex("#0b0b0f"), Transparency = 0 },
+    }, {Rotation = 0}),
+})
+
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub Universal",
-    Icon = "solar:global-bold", -- lucide icon
+    Icon = "globe", -- fixed icon
     Author = "By @aiz.fun",
     Folder = "Aiz Hub Universal",
-    
-   
     Size = UDim2.fromOffset(580, 460),
     MinSize = Vector2.new(560, 350),
     MaxSize = Vector2.new(850, 560),
@@ -17,7 +25,6 @@ local Window = WindUI:CreateWindow({
     BackgroundImageTransparency = 0.42,
     HideSearchBar = false,
     ScrollBarEnabled = true,
-    
     User = {
         Enabled = true,
         Anonymous = false,
@@ -25,12 +32,68 @@ local Window = WindUI:CreateWindow({
             print("clicked")
         end,
     },
-
 })
---custom bar
-Window:CreateTopbarButton("Help", "question-circle-broken",    function() setclipboard("https://discord.gg/aiz") end,  990)
---custom tag
-Window:Tag({Title = "Testing!",Icon = "info-circle-broken",Color = Color3.fromHex("#9713e496"),Radius = 10, })
--- custom theme
-WindUI:AddTheme({Name = "Purple Gradient",Accent = WindUI:Gradient({["0"] = { Color = Color3.fromHex("#2b1055"), Transparency = 0 },["100"] = { Color = Color3.fromHex("#0b0b0f"), Transparency = 0 },}, {Rotation = 0,}),})
---Home tab
+
+-- custom bar (fixed method name)
+Window:AddTopbarButton({
+    Title = "Help",
+    Icon = "help-circle", -- fixed icon
+    Callback = function() setclipboard("https://discord.gg/aiz") end,
+})
+
+-- custom tag (fixed method name and icon)
+Window:EditTag({
+    Title = "Testing!",
+    Icon = "info", 
+    Color = Color3.fromHex("#9713e496"),
+    Radius = 10, 
+})
+
+-- Home tab
+local Home = Window:Tab({
+    Title = "Home",
+    Icon = "home", -- fixed icon
+})
+
+-- Get user info safely
+local Player = game.Players.LocalPlayer
+local UserId = Player.UserId
+local DisplayName = Player.DisplayName
+local Thumbnail = "rbxassetid://0"
+
+pcall(function()
+    Thumbnail = game.Players:GetUserThumbnailAsync(UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size150x150)
+end)
+
+Home:Paragraph({
+    Title = "Welcome, " .. DisplayName .. "!",
+    Desc = "Thanks for using Aiz Hub Universal. Join our community for updates and support!",
+    Image = Thumbnail,
+    ImageSize = 45,
+    Buttons = {
+        {
+            Title = "Discord Server",
+            Icon = "message-circle", 
+            Callback = function()
+                setclipboard("https://discord.gg/aiz")
+                WindUI:Notify({
+                    Title = "Aiz Hub",
+                    Content = "Discord link copied to clipboard!",
+                    Duration = 5
+                })
+            end
+        },
+        {
+            Title = "Help Center",
+            Icon = "help-circle", 
+            Callback = function()
+                setclipboard("https://aiz.fun")
+                WindUI:Notify({
+                    Title = "Aiz Hub",
+                    Content = "Website link copied to clipboard!",
+                    Duration = 5
+                })
+            end
+        }
+    }
+})
