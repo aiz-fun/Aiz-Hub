@@ -3,7 +3,7 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub Universal",
-    Icon = "lucide:globe",
+    Icon = "globe",
     Author = "By @aiz.fun",
     Folder = "Aiz Hub Universal",
     Size = UDim2.fromOffset(580, 460),
@@ -13,7 +13,7 @@ local Window = WindUI:CreateWindow({
 
 local Home = Window:Tab({
     Title = "Home",
-    Icon = "lucide:home",
+    Icon = "home",
 })
 
 print("Minimal script loaded!")
