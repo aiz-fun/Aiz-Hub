@@ -3,10 +3,10 @@ local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/rel
 
 -- custom theme (must be added BEFORE CreateWindow if used in config)
 WindUI:AddTheme({
-    Name = "Purple Gradient",
+    Name = "Purple-Gradient",
     Accent = WindUI:Gradient({
-        ["0"] = { Color = Color3.fromHex("#2b1055"), Transparency = 0 },
-        ["100"] = { Color = Color3.fromHex("#0b0b0f"), Transparency = 0 },
+        ["0"] = { Color = Color3.fromHex("#6a0dad"), Transparency = 0 }, -- Royal Purple
+        ["100"] = { Color = Color3.fromHex("#111111"), Transparency = 0 }, -- Soft Black
     }, {Rotation = 0}),
 })
 
@@ -19,7 +19,7 @@ local Window = WindUI:CreateWindow({
     MinSize = Vector2.new(560, 350),
     MaxSize = Vector2.new(850, 560),
     Transparent = true,
-    Theme = "Purple Gradient",
+    Theme = "Purple-Gradient",
     Resizable = true,
     SideBarWidth = 200,
     BackgroundImageTransparency = 0.42,
