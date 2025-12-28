@@ -34,3 +34,40 @@ Window:Tag({Title = "Testing!",Icon = "info-circle-broken",Color = Color3.fromHe
 -- custom theme
 WindUI:AddTheme({Name = "Purple Gradient",Accent = WindUI:Gradient({["0"] = { Color = Color3.fromHex("#2b1055"), Transparency = 0 },["100"] = { Color = Color3.fromHex("#0b0b0f"), Transparency = 0 },}, {Rotation = 0,}),})
 --Home tab
+local Home = Window:Tab({
+    Title = "Home",
+    Icon = "lucide/home",
+})
+
+Home:Paragraph({
+    Title = "Welcome, " .. game.Players.LocalPlayer.DisplayName .. "!",
+    Desc = "Thanks for using Aiz Hub Universal. Join our community for updates and support!",
+    Image = WindUI:GetUserThumbnail(game.Players.LocalPlayer.UserId),
+    ImageSize = 45,
+    Buttons = {
+        {
+            Title = "Discord Server",
+            Icon = "lucide/message-circle",
+            Callback = function()
+                setclipboard("https://discord.gg/aiz")
+                WindUI:Notify({
+                    Title = "Aiz Hub",
+                    Content = "Discord link copied to clipboard!",
+                    Duration = 5
+                })
+            end
+        },
+        {
+            Title = "Help Center",
+            Icon = "lucide/help-circle",
+            Callback = function()
+                setclipboard("https://aiz.fun")
+                WindUI:Notify({
+                    Title = "Aiz Hub",
+                    Content = "Website link copied to clipboard!",
+                    Duration = 5
+                })
+            end
+        }
+    }
+})
