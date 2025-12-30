@@ -11,7 +11,7 @@ WindUI:AddTheme({
 })
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
-    Icon = "door-open", 
+    Icon = "planet-2-broken", 
     Author = "by .0oiwp dont forget to follow",
     Folder = "-168",
     
