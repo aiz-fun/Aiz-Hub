@@ -12,10 +12,10 @@ WindUI:AddTheme({
 
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
-    Icon = "solar:planet-2-broken", 
+    Icon = "solar:planet-2-bold-duotone", 
     Author = "by .0oiwp",
     Folder = "-168",
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(700, 500), -- Lebar saya tambah sedikit agar 2 kolom muat lega
     Transparent = true,
     Theme = "Neon-Purple-Black",
     Resizable = true,
@@ -32,7 +32,7 @@ local Window = WindUI:CreateWindow({
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- === LOGIKA TANGGAL & TEMAN ===
+-- === LOGIKA HITUNGAN LOCAL PLAYER ===
 local secondsInDay = 86400
 local creationTime = os.time() - (LocalPlayer.AccountAge * secondsInDay)
 local joinDate = os.date("%d %B %Y", creationTime)
@@ -42,74 +42,150 @@ for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
     onlineFriends = onlineFriends + 1
 end
 
--- Link untuk mengambil foto Headshot karakter (Avatar)
--- w=420&h=420 adalah resolusi gambar
+-- Link Foto Avatar Local
 local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=420&h=420"
 
--- === MEMBUAT TAB ===
+-- === TAB ===
 local UserTab = Window:Tab({
-    Title = "User Info",
-    Icon = "user",
+    Title = "User Profile",
+    Icon = "solar:user-circle-bold",
     Locked = false,
 })
 
--- === MEMBUAT SECTION (Dengan Box = true) ===
-local InfoSection = UserTab:Section({
-    Title = "Profile Information",
+-- ==========================================
+-- KOLOM KIRI: INFO AKUN KAMU (LOCAL PLAYER)
+-- ==========================================
+
+-- SECTION HEADER
+local MainSection = UserTab:Section({
+    Title = "My Identity",
     Side = "Left",
-    Box = true -- Sesuai permintaan
+    Box = true
 })
 
--- === PARAGRAPH DENGAN GAMBAR & TOMBOL ===
-InfoSection:Paragraph({
-    -- Judul pakai Display Name biar besar
+MainSection:Paragraph({
     Title = LocalPlayer.DisplayName,
-    
-    -- Isi deskripsi digabung menggunakan "\n" (Enter/Baris Baru)
-    Desc = "Username: @" .. LocalPlayer.Name .. "\n" ..
-           "Status: " .. (onlineFriends > 0 and "Online" or "Solo") .. "\n\n" ..
-           "📅 Join: " .. joinDate .. "\n" ..
-           "⏳ Umur Akun: " .. LocalPlayer.AccountAge .. " Hari\n" ..
-           "👥 Teman Online: " .. onlineFriends,
-    
-    -- Gambar Avatar
-    Image = avatarImage, 
-    ImageSize = 70, -- Ukuran gambar avatar (diperbesar agar jelas)
-    
-    -- Thumbnail kecil di pojok kanan (Opsional, saya kosongkan agar tidak menumpuk)
-    Thumbnail = "", 
-    ThumbnailSize = 30,
-    
-    Locked = false,
-    
-    -- Tombol tambahan di bawah paragraf
+    Desc = "Status: " .. (onlineFriends > 0 and "Online" or "Solo"),
+    Image = avatarImage,
+    ImageSize = 60,
     Buttons = {
         {
-            Icon = "copy", -- Icon salin
-            Title = "Copy Username",
-            Callback = function() 
-                setclipboard(LocalPlayer.Name)
-                WindUI:Notify({
-                    Title = "Copied!",
-                    Content = "Username telah disalin ke clipboard.",
-                    Duration = 2,
-                    Icon = "check"
-                })
-            end,
-        },
+            Title = "Copy Name",
+            Icon = "solar:copy-bold",
+            Callback = function() setclipboard(LocalPlayer.Name) end
+        }
+    }
+})
+
+-- SECTION DETAIL STATISTIK
+local DetailSection = UserTab:Section({
+    Title = "My Stats",
+    Side = "Left", 
+    Box = true
+})
+
+DetailSection:Paragraph({
+    Title = "Username",
+    Desc = "@" .. LocalPlayer.Name,
+    Icon = "solar:user-id-bold"
+})
+
+DetailSection:Paragraph({
+    Title = "Join Date",
+    Desc = joinDate,
+    Icon = "solar:calendar-date-bold"
+})
+
+DetailSection:Paragraph({
+    Title = "Account Age",
+    Desc = LocalPlayer.AccountAge .. " Days",
+    Icon = "solar:history-bold"
+})
+
+DetailSection:Paragraph({
+    Title = "Friends Online",
+    Desc = onlineFriends .. " Active",
+    Icon = "solar:users-group-rounded-bold"
+})
+
+-- ==========================================
+-- KOLOM KANAN: DAFTAR PEMAIN LAIN (SERVER)
+-- ==========================================
+
+local PlayerListSection = UserTab:Section({
+    Title = "Server Players",
+    Side = "Right", -- Ditaruh di kanan biar rapi
+    Box = true,
+    Icon = "solar:users-group-two-rounded-bold"
+})
+
+-- Fungsi untuk menambahkan player ke list
+local function AddPlayerToList(player)
+    -- Ambil foto profil player lain
+    local thumb = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
+    
+    PlayerListSection:Paragraph({
+        Title = player.DisplayName,
+        Desc = "@" .. player.Name .. "\nID: " .. player.UserId,
+        Image = thumb,
+        ImageSize = 45,
+        Buttons = {
+            {
+                Title = "Copy Name",
+                Icon = "solar:copy-bold",
+                Callback = function() 
+                    setclipboard(player.Name)
+                    WindUI:Notify({
+                        Title = "Copied",
+                        Content = "Copied @"..player.Name,
+                        Duration = 1.5,
+                        Icon = "solar:check-circle-bold"
+                    })
+                end
+            },
+            {
+                Title = "View Avatar", -- Tombol tambahan seru
+                Icon = "solar:camera-bold",
+                Callback = function()
+                     -- Ini hanya contoh print, krn WindUI tidak punya popup gambar
+                     print("Viewing avatar of: " .. player.Name)
+                end
+            }
+        }
+    })
+end
+
+-- 1. Tambahkan semua pemain yang sudah ada di server (kecuali diri sendiri)
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        AddPlayerToList(player)
+    end
+end
+
+-- 2. (Opsional) Refresh Button di paling atas kanan jika ada player baru masuk
+PlayerListSection:Paragraph({
+    Title = "Information",
+    Desc = "List shows players currently in server.",
+    Icon = "solar:info-circle-bold",
+    Buttons = {
         {
-            Icon = "user-plus", 
-            Title = "Rejoin", -- Contoh fitur tombol kedua
+            Title = "Refresh List", -- Tombol refresh manual (simple logic)
+            Icon = "solar:restart-bold",
             Callback = function()
-                game:GetService("TeleportService"):Teleport(game.PlaceId, LocalPlayer)
-            end,
+                WindUI:Notify({
+                    Title = "Refresh",
+                    Content = "Please re-execute script to update list (Static UI)",
+                    Duration = 3,
+                    Icon = "solar:info-square-bold"
+                })
+            end
         }
     }
 })
 
 WindUI:Notify({
-    Title = "Loaded!",
-    Content = "Profile Tab berhasil dimuat.",
+    Title = "Loaded",
+    Content = "User & Server list loaded.",
     Duration = 3, 
-    Icon = "check"
+    Icon = "solar:check-read-linear"
 })
