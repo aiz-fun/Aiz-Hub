@@ -17,7 +17,7 @@ IconsV2.SetIconsType("solar")
 
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
-    Icon = "planet-2-broken", 
+    Icon = "solar:planet-2-broken", 
     Author = "by .0oiwp dont forget to follow",
     Folder = "-168",
     
