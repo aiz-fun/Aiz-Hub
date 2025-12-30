@@ -96,7 +96,7 @@ for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
     onlineFriends = onlineFriends + 1
 end
 
-UserTab:Label({
+UserTab:label({
     Title = "Teman Online: " .. onlineFriends .. " Orang",
     Icon = "users"
 })
