@@ -65,25 +65,25 @@ UserTab:Paragraph({
 })
 
 -- Display Name
-UserTab:Label({
+UserTab:label({
     Title = "Display Name: " .. LocalPlayer.DisplayName,
     Icon = "tag"
 })
 
 -- Username
-UserTab:Label({
+UserTab:label({
     Title = "Username: @" .. LocalPlayer.Name,
     Icon = "at-sign"
 })
 
 -- Tanggal Join (Hasil Perhitungan)
-UserTab:Label({
+UserTab:label({
     Title = "Join Tanggal: " .. joinDate,
     Icon = "calendar"
 })
 
 -- Umur Akun (Total Hari)
-UserTab:Label({
+UserTab:label({
     Title = "Umur Akun: " .. LocalPlayer.AccountAge .. " Hari",
     Icon = "clock"
 })
