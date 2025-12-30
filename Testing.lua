@@ -59,31 +59,31 @@ local UserTab = Window:Tab({
 -- MENAMBAHKAN KONTEN KE TAB
 
 -- Header
-UserTab:AddParagraph({
+UserTab:Paragraph({
     Title = "Halo, " .. LocalPlayer.DisplayName,
     Content = "Berikut adalah informasi statistik akun kamu saat ini."
 })
 
 -- Display Name
-UserTab:AddLabel({
+UserTab:Label({
     Title = "Display Name: " .. LocalPlayer.DisplayName,
     Icon = "tag"
 })
 
 -- Username
-UserTab:AddLabel({
+UserTab:Label({
     Title = "Username: @" .. LocalPlayer.Name,
     Icon = "at-sign"
 })
 
 -- Tanggal Join (Hasil Perhitungan)
-UserTab:AddLabel({
+UserTab:Label({
     Title = "Join Tanggal: " .. joinDate,
     Icon = "calendar"
 })
 
 -- Umur Akun (Total Hari)
-UserTab:AddLabel({
+UserTab:Label({
     Title = "Umur Akun: " .. LocalPlayer.AccountAge .. " Hari",
     Icon = "clock"
 })
@@ -96,7 +96,7 @@ for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
     onlineFriends = onlineFriends + 1
 end
 
-UserTab:AddLabel({
+UserTab:Label({
     Title = "Teman Online: " .. onlineFriends .. " Orang",
     Icon = "users"
 })
