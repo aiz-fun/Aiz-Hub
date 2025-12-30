@@ -1,15 +1,23 @@
--- ====================================================
--- KONFIGURASI DATABASE
--- ====================================================
-local DatabaseURL = "https://raw.githubusercontent.com/aiz-fun/Aiz-Hub/refs/heads/main/database.json"
-
-local HttpService = game:GetService("HttpService")
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 -- ====================================================
--- 1. SISTEM CEK PREMIUM (VIA DATABASE)
+-- 1. DAFTAR ID PREMIUM (MANUAL)
+-- ====================================================
+-- Masukkan User ID siapa saja yang berhak dapat Premium/Gold di sini.
+-- Pisahkan dengan koma.
+
+local PremiumList = {
+    12345678,    -- Contoh ID 1
+    87654321,    -- Contoh ID 2
+    LocalPlayer.UserId, -- << INI OTOMATIS BIKIN KAMU JADI PREMIUM (Hapus jika ingin ngetes mode Free)
+    -- Tambahkan ID temanmu di bawah sini:
+    -- 55998877, 
+}
+
+-- ====================================================
+-- 2. LOGIKA CEK PREMIUM
 -- ====================================================
 
 local IsPremium = false
@@ -17,33 +25,16 @@ local UserStatus = "Free User"
 local ThemeColor = "#A855F7" -- Default: Ungu (Neon Purple)
 local StatusIcon = "solar:box-bold"
 
--- Mengambil Data dari Link GitHub
-local success, response = pcall(function()
-    return game:HttpGet(DatabaseURL)
-end)
-
-if success then
-    local decodeSuccess, data = pcall(function()
-        return HttpService:JSONDecode(response)
-    end)
-
-    if decodeSuccess and type(data) == "table" then
-        -- Cek apakah UserID pemain ada di dalam daftar JSON
-        if table.find(data, LocalPlayer.UserId) then
-            IsPremium = true
-            UserStatus = "PREMIUM 👑"
-            ThemeColor = "#FFD700" -- Ubah tema jadi KUNING EMAS (Gold)
-            StatusIcon = "solar:crown-star-bold"
-        end
-    else
-        warn("Gagal decode JSON. Pastikan format di GitHub benar (Array Only).")
-    end
-else
-    warn("Gagal mengambil Database. Cek Link RAW atau koneksi internet.")
+-- Cek apakah ID kita ada di dalam daftar PremiumList
+if table.find(PremiumList, LocalPlayer.UserId) then
+    IsPremium = true
+    UserStatus = "PREMIUM 👑"
+    ThemeColor = "#FFD700" -- Ubah tema jadi KUNING EMAS (Gold)
+    StatusIcon = "solar:crown-star-bold"
 end
 
 -- ====================================================
--- 2. SETUP UI (WARNA DINAMIS)
+-- 3. SETUP UI (WARNA DINAMIS)
 -- ====================================================
 
 WindUI:AddTheme({
@@ -88,6 +79,136 @@ local joinDate = os.date("%d %B %Y", creationTime)
 local onlineFriends = 0
 for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
     onlineFriends = onlineFriends + 1
+end
+
+local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=420&h=420"
+
+-- Fungsi Teleport
+local function TeleportToPlayer(targetPlayer)
+    if targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
+        WindUI:Notify({Title="Teleport", Content="Teleported to " .. targetPlayer.DisplayName, Duration=2, Icon="solar:map-point-bold"})
+    else
+        WindUI:Notify({Title="Error", Content="Target not found / Spawned", Duration=2, Icon="solar:danger-circle-bold"})
+    end
+end
+
+-- ====================================================
+-- 4. TAB & SECTION UI
+-- ====================================================
+
+local UserTab = Window:Tab({ Title = "User Profile", Icon = "solar:user-circle-bold", Locked = false })
+
+-- [KIRI] IDENTITY
+local MainSection = UserTab:Section({ 
+    Title = "My Identity", 
+    Side = "Left", 
+    Box = true, 
+    Icon = "solar:card-recieved-bold" 
+})
+
+MainSection:Paragraph({
+    Title = LocalPlayer.DisplayName,
+    -- Teks Premium berwarna Emas jika aktif (RichText)
+    Desc = "License: " .. (IsPremium and '<font color="#FFD700"><b>PREMIUM</b></font>' or "Free Version") .. 
+           "\nStatus: " .. (onlineFriends > 0 and "Online" or "Solo"),
+    Image = avatarImage,
+    ImageSize = 65,
+    Buttons = {
+        {
+            Title = "Copy Display",
+            Icon = "solar:tag-bold",
+            Callback = function() 
+                setclipboard(LocalPlayer.DisplayName) 
+                WindUI:Notify({Title="Copied", Content="Copied Display Name", Duration=1})
+            end
+        },
+        {
+            Title = "Copy User",
+            Icon = "solar:copy-bold",
+            Callback = function() 
+                setclipboard(LocalPlayer.Name) 
+                WindUI:Notify({Title="Copied", Content="Copied Username", Duration=1})
+            end
+        }
+    }
+})
+
+-- [KIRI] STATS
+local DetailSection = UserTab:Section({ 
+    Title = "Account Stats", 
+    Side = "Left", 
+    Box = true, 
+    Icon = "solar:chart-square-bold" 
+})
+
+DetailSection:Paragraph({
+    Title = "Membership",
+    Desc = UserStatus,
+    Icon = StatusIcon
+})
+
+DetailSection:Paragraph({ Title = "Username", Desc = "@" .. LocalPlayer.Name, Icon = "solar:user-id-bold" })
+DetailSection:Paragraph({ Title = "Join Date", Desc = joinDate, Icon = "solar:calendar-date-bold" })
+DetailSection:Paragraph({ Title = "Account Age", Desc = LocalPlayer.AccountAge .. " Days", Icon = "solar:history-bold" })
+DetailSection:Paragraph({ Title = "Friends", Desc = onlineFriends .. " Online", Icon = "solar:users-group-rounded-bold" })
+
+
+-- ====================================================
+-- 5. SERVER PLAYERS (KANAN - AUTO UPDATE)
+-- ====================================================
+
+local PlayerListSection = UserTab:Section({ 
+    Title = "Server Players (Realtime)", 
+    Side = "Right", 
+    Box = true, 
+    Icon = "solar:global-bold" 
+})
+
+local function CreatePlayerUI(player)
+    local thumb = "rbxthumb://type=AvatarHeadShot&id=" .. player.UserId .. "&w=150&h=150"
+    
+    PlayerListSection:Paragraph({
+        Title = player.DisplayName,
+        Desc = "@" .. player.Name,
+        Image = thumb,
+        ImageSize = 45,
+        Buttons = {
+            {
+                Title = "Goto",
+                Icon = "solar:map-point-bold",
+                Callback = function() TeleportToPlayer(player) end
+            },
+            {
+                Title = "Copy Name",
+                Icon = "solar:copy-linear",
+                Callback = function() 
+                    setclipboard(player.Name) 
+                    WindUI:Notify({Title="Copied", Content="Copied @"..player.Name, Duration=1})
+                end
+            }
+        }
+    })
+end
+
+-- 1. Load player yang sudah ada
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        CreatePlayerUI(player)
+    end
+end
+
+-- 2. Auto Add Player (Jika ada yang join)
+Players.PlayerAdded:Connect(function(player)
+    task.wait(1)
+    WindUI:Notify({Title="New Player", Content=player.DisplayName.." joined!", Duration=3, Icon="solar:user-plus-bold"})
+    CreatePlayerUI(player)
+end)
+
+-- 3. Info Player Left
+Players.PlayerRemoving:Connect(function(player)
+    WindUI:Notify({Title="Player Left", Content=player.DisplayName.." left.", Duration=3, Icon="solar:user-minus-linear"})
+end)    onlineFriends = onlineFriends + 1
 end
 
 local avatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=420&h=420"
