@@ -162,16 +162,27 @@ local SettingsSection = UserTab:Section({
 
 -- 1. DROPDOWN TEMA (FIXED)
 SettingsSection:Dropdown({
-    
-       SettingsSection:Input({
-       Title = "Interface Theme",
-       Desc = "Select Ui Color",
-       InputIcon = "solar:password-minimalistic-input-broken",
-       Type = "Input",
-       Placeholder = "Red - Purple - Blue - Green - Gold",
-       Callback = function(val) 
+    Title = "Interface Theme",
+    Desc = "Select UI Color",
+    Multi = false,
+    Required = false,
+    -- Nama item harus SAMA PERSIS dengan nama di WindUI:AddTheme di atas
+    Items = {"Purple", "Red", "Blue", "Green", "Gold"},
+    Default = CurrentTheme,
+    Callback = function(val)
+        -- Fungsi ganti tema
         WindUI:SetTheme(val)
         
+    SettingsSection:Input({
+    Title = "Interface Theme",
+    Desc = "Select Ui Color",
+    InputIcon = "bird",
+    Type = "Input",
+    Placeholder = "Red - Purple - Blue - Green - Gold",
+    Callback = function(inp) 
+        print("text entered: " .. input)
+    end
+})
         -- Notifikasi konfirmasi
         WindUI:Notify({
             Title = "Theme Changed", 
