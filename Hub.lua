@@ -1,4 +1,4 @@
-7local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 WindUI:AddTheme({
     Name = "Neon-Purple-Black",
 
@@ -33,7 +33,6 @@ local Window = WindUI:CreateWindow({
         setclipboard(game.Players.LocalPlayer.DisplayName)
     end,
     },
-    
 })
 WindUI:Notify({
     Title = "Welcome to the [Aiz Hub | Universal]",
