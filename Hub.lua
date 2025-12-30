@@ -11,7 +11,7 @@ WindUI:AddTheme({
 })
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
-    Icon = "planet-2-broken", 
+    Icon = "atom", 
     Author = "by .0oiwp dont forget to follow",
     Folder = "-168",
     
@@ -37,7 +37,7 @@ local Window = WindUI:CreateWindow({
 })
 WindUI:Notify({
     Title = "Welcome to the [Aiz Hub | Universal]",
-    Content = "This Script Is Beta, So If You Have A Problem With This Script You Can Repots That In Discord, Have Fun With This Scrip :)",
+    Content = "This Script Is Beta !",
     Duration = 3, 
-    Icon = "notification-unread-lines-broken",
+    Icon = "info",
 })
