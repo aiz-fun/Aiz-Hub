@@ -40,3 +40,63 @@ WindUI:Notify({
     Duration = 3, 
     Icon = "solar:notification-unread-lines-broken",
 })
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- LOGIKA MENGHITUNG TANGGAL JOIN
+-- Mengambil waktu sekarang dikurangi umur akun (dalam detik)
+local secondsInDay = 86400 -- 24 jam * 60 menit * 60 detik
+local creationTime = os.time() - (LocalPlayer.AccountAge * secondsInDay)
+local joinDate = os.date("%d %B %Y", creationTime) -- Format: Tanggal Bulan Tahun
+
+-- MEMBUAT TAB
+local UserTab = Window:Tab({
+    Title = "User Info",
+    Icon = "user", -- Icon user/orang
+    Locked = false,
+})
+
+-- MENAMBAHKAN KONTEN KE TAB
+
+-- Header
+UserTab:AddParagraph({
+    Title = "Halo, " .. LocalPlayer.DisplayName,
+    Content = "Berikut adalah informasi statistik akun kamu saat ini."
+})
+
+-- Display Name
+UserTab:AddLabel({
+    Title = "Display Name: " .. LocalPlayer.DisplayName,
+    Icon = "tag"
+})
+
+-- Username
+UserTab:AddLabel({
+    Title = "Username: @" .. LocalPlayer.Name,
+    Icon = "at-sign"
+})
+
+-- Tanggal Join (Hasil Perhitungan)
+UserTab:AddLabel({
+    Title = "Join Tanggal: " .. joinDate,
+    Icon = "calendar"
+})
+
+-- Umur Akun (Total Hari)
+UserTab:AddLabel({
+    Title = "Umur Akun: " .. LocalPlayer.AccountAge .. " Hari",
+    Icon = "clock"
+})
+
+-- Catatan soal Jumlah Teman:
+-- Karena sulit mengambil total teman tanpa HTTP Proxy,
+-- kita bisa menampilkan teman yang sedang online saja sebagai alternatif.
+local onlineFriends = 0
+for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
+    onlineFriends = onlineFriends + 1
+end
+
+UserTab:AddLabel({
+    Title = "Teman Online: " .. onlineFriends .. " Orang",
+    Icon = "users"
+})
