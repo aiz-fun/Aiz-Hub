@@ -44,59 +44,59 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- LOGIKA MENGHITUNG TANGGAL JOIN
--- Mengambil waktu sekarang dikurangi umur akun (dalam detik)
-local secondsInDay = 86400 -- 24 jam * 60 menit * 60 detik
+local secondsInDay = 86400
 local creationTime = os.time() - (LocalPlayer.AccountAge * secondsInDay)
-local joinDate = os.date("%d %B %Y", creationTime) -- Format: Tanggal Bulan Tahun
+local joinDate = os.date("%d %B %Y", creationTime)
 
--- MEMBUAT TAB
+-- --- MULAI SETUP UI ---
+
+-- 1. Buat Tab
 local UserTab = Window:Tab({
     Title = "User Info",
-    Icon = "user", -- Icon user/orang
+    Icon = "user",
     Locked = false,
 })
 
--- MENAMBAHKAN KONTEN KE TAB
-
--- Header
-UserTab:AddParagraph({
-    Title = "Halo, " .. LocalPlayer.DisplayName,
-    Content = "Berikut adalah informasi statistik akun kamu saat ini."
+-- 2. PENTING: Buat Section terlebih dahulu!
+-- Banyak library seperti WindUI/Fluent membutuhkan Section agar elemen bisa muncul.
+local InfoSection = UserTab:Section({
+    Title = "Statistik Akun",
+    Side = "Left" -- Opsional: Left atau Right (tergantung library)
 })
 
--- Display Name
-UserTab:AddLabel({
-    Title = "Display Name: " .. LocalPlayer.DisplayName,
-    Icon = "tag"
+-- 3. Tambahkan Elemen ke dalam SECTION (bukan Tab langsung)
+
+-- Display Name & Header
+InfoSection:Paragraph({
+    Title = "Halo, " .. LocalPlayer.DisplayName,
+    Content = "Berikut adalah data akun kamu saat ini."
 })
 
 -- Username
-UserTab:AddLabel({
+InfoSection:Label({
     Title = "Username: @" .. LocalPlayer.Name,
     Icon = "at-sign"
 })
 
--- Tanggal Join (Hasil Perhitungan)
-UserTab:AddLabel({
+-- Tanggal Join
+InfoSection:Label({
     Title = "Join Tanggal: " .. joinDate,
     Icon = "calendar"
 })
 
--- Umur Akun (Total Hari)
-UserTab:AddLabel({
+-- Umur Akun
+InfoSection:Label({
     Title = "Umur Akun: " .. LocalPlayer.AccountAge .. " Hari",
     Icon = "clock"
 })
 
--- Catatan soal Jumlah Teman:
--- Karena sulit mengambil total teman tanpa HTTP Proxy,
--- kita bisa menampilkan teman yang sedang online saja sebagai alternatif.
+-- Teman Online
 local onlineFriends = 0
 for _, friend in pairs(LocalPlayer:GetFriendsOnline()) do
     onlineFriends = onlineFriends + 1
 end
 
-UserTab:AddLabel({
-    Title = "Teman Online: " .. onlineFriends .. " Orang",
+InfoSection:Label({
+    Title = "Teman Online: " .. onlineFriends,
     Icon = "users"
 })
