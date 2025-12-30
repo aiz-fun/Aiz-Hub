@@ -41,3 +41,54 @@ WindUI:Notify({
     Duration = 3, 
     Icon = "info",
 })
+Window:Tag({
+    Title = "v1.6.6",
+    Icon = "lucide-github", -- Menggunakan icon lucide github
+    Color = Color3.fromHex("#30ff6a"),
+    Radius = 8,
+})
+
+-- Tag FPS (Otomatis muncul warna hijau di atas)
+Window:EditElement("FPS", { 
+    Visible = true 
+})
+
+-- 3. MEMBUAT TAB (Sidebar Kiri)
+local MyTab = Window:Tab({
+    Title = "UI",
+    Icon = "rbxassetid://10723345661"
+})
+
+-- 4. MEMBUAT SECTION (Kotak abu-abu di dalam Tab)
+local FpsSection = MyTab:Section({
+    Title = "Fps Tag"
+})
+
+-- 5. MEMASUKKAN ELEMEN KE DALAM SECTION
+-- Toggle Enable Tag
+local Toggle = FpsSection:Toggle({
+    Title = "Enable Tag",
+    Value = true,
+    Callback = function(state)
+        -- Logika untuk menyalakan/mematikan tag FPS
+        Window:EditElement("FPS", { Visible = state })
+        print("FPS Tag Enabled:", state)
+    end
+})
+
+-- Slider Update Delay
+local Slider = FpsSection:Slider({
+    Title = "Update Delay",
+    Step = 0.01,
+    Value = {
+        Min = 0,
+        Max = 1,
+        Default = 0.19,
+    },
+    Callback = function(value)
+        print("Update Delay set to:", value)
+    end
+})
+
+-- Memilih tab agar langsung terbuka saat script dijalankan
+Window:SelectTab(MyTab)
