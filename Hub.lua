@@ -12,7 +12,7 @@ WindUI:AddTheme({
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
     Icon = "door-open", 
-    Author = "by .0oiwp | dont forget to follow",
+    Author = "by .0oiwp dont forget to follow",
     Folder = "-168",
     
     Size = UDim2.fromOffset(580, 460),
@@ -27,11 +27,11 @@ local Window = WindUI:CreateWindow({
     ScrollBarEnabled = false,
    
     User = {
-        Enabled = true,
-        Anonymous = false,
-        Callback = function()
-            print("clicked")
-        end,
+    Enabled = true,
+    Anonymous = false,
+    Callback = function()
+        setclipboard(game.Players.LocalPlayer.DisplayName)
+    end,
     },
     
 })
