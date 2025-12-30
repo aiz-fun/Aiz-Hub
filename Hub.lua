@@ -9,15 +9,9 @@ WindUI:AddTheme({
         Rotation = 0,
     }),
 })
--- Load icons
-local IconsV1 = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main.lua"))()
-local IconsV2 = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"))()
-
-IconsV2.SetIconsType("solar") 
-
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
-    Icon = "solar:planet-2-broken", 
+    Icon = "planet-2-broken", 
     Author = "by .0oiwp dont forget to follow",
     Folder = "-168",
     
@@ -40,4 +34,10 @@ local Window = WindUI:CreateWindow({
     end,
     },
     
+})
+WindUI:Notify({
+    Title = "Welcome to the [Aiz Hub | Universal]",
+    Content = "This Script Is Beta, So If You Have A Problem With This Script You Can Repots That In Discord, Have Fun With This Scrip :)",
+    Duration = 3, 
+    Icon = "notification-unread-lines-broken",
 })
