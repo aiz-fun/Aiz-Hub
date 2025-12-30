@@ -9,6 +9,12 @@ WindUI:AddTheme({
         Rotation = 0,
     }),
 })
+-- Load icons
+local IconsV1 = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main.lua"))()
+local IconsV2 = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"))()
+
+IconsV2.SetIconsType("solar") 
+
 local Window = WindUI:CreateWindow({
     Title = "Aiz Hub | Universal",
     Icon = "planet-2-broken", 
